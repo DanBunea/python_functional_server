@@ -8,12 +8,14 @@ Acceptance Test
 
 We save an article:
 
-POST /api/1/save/Article
 
+POST /api/1/save/Article
+```json
 {
 title:"New article",
 content:"The content"
 }
+```
 
 and we receive the article + id:
 
