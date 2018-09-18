@@ -3,7 +3,8 @@ import sys
 import traceback
 
 from commons import debug
-from database_services import get_database_object, Session, save_database_object, Article
+from database_read_services import collect_query_parameters, generate_queries, run_queries
+from database_write_services import get_database_object, Session, save_database_object, Article
 from lib.flask import jsonify
 from transform_services import transform_from_json, transform_to_json
 
@@ -32,29 +33,13 @@ def service():
             try:
                 return f(*args, **kwargs)
             except Exception as err:
-                # if isinstance(err, NotImplementedError):
-                #     return jsonify(errors=["Not implemented error"]), 501
+                traceback.print_exc(file=sys.stdout)
+                if isinstance(err, NotImplementedError):
+                    return jsonify(errors=["Not implemented error"]), 501
                 # elif isinstance(err, basestring):
                 #     return jsonify(errors=[err]), 501
-                # return jsonify(errors=err[0].errors), 500
-                # error("Unexpected error:",sys.exc_info()[0])
-                traceback.print_exc(file=sys.stdout)
-                # error("Error was printed.", err)
-                if hasattr(err[0], "errors"):
+                elif hasattr(err[0], "errors"):
                     return jsonify(errors=err[0].errors), 500
-                #prettyfy the message
-                new_errors = []
-                # new_errors.append(dict(
-                #                 id=None,
-                #                 code="1022",
-                #                 type=None,
-                #                 property=None,
-                #                 error="Internal server error",
-                #                 key_for_import=None,
-                #                 value_for_import=None
-                #             ))
-                # new_errors.append(err[0])
-
                 return jsonify(errors=err[0]), 500
 
 
@@ -89,6 +74,37 @@ def save(json, session):
         transform_to_json,
         to_json
       ])
+
+    final_state = process(initial_state)
+
+
+    return final_state
+
+
+
+
+@app.route("/api/1/query/Article", methods=["POST"])
+@service()
+def api_query():
+    return query(request.json, get_session())
+
+
+
+
+def query(json, session):
+    initial_state = Immutable(data=None, errors=[])
+
+    process = compose_list([
+        change("json", json),
+        change("session", session),
+        change("type", Article),
+        collect_query_parameters,
+        generate_queries,
+        run_queries
+      ])
+
+
+    # transform("data", "data"),
 
     final_state = process(initial_state)
 

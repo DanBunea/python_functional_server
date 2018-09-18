@@ -2,7 +2,7 @@ from json import loads, dumps
 
 from mock import mock
 
-from database_services import Article, Comment
+from database_write_services import Article, Comment
 from functional import compose_list
 from immutable import Immutable, change, value
 from tests.base_test import BaseTest

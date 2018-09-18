@@ -30,22 +30,22 @@ class AcceptanceTest(BaseTest):
 
 
 
-        # expected_articles={
-        #     saved_article["id"]:{
-        #         "title": "New article",
-        #         "content": "The content",
-        #         "comments":{
-        #             "113":{"comment": "This was awesome!"},
-        #             "114":{"comment": "I loved it as well!"}
-        #         }
-        #     }
-        # }
-        #
-        # articles = self.postJson("/api/1/query/Article", {
-        #     "find": ["id","title","content",{"comments":["id","comment"]}],
-        #     "where":{"id":saved_article["id"]}})
-        #
-        #
-        # self.compareRecursively(expected_articles, articles,["id"])
+        expected_articles={
+            saved_article["id"]:{
+                "title": "New article",
+                "content": "The content",
+                "comments":{
+                    "113":{"comment": "This was awesome!"},
+                    "114":{"comment": "I loved it as well!"}
+                }
+            }
+        }
+
+        articles = self.postJson("/api/1/query/Article", {
+            "find": ["id","title","content",{"comments":["id","comment"]}],
+            "where":{"id":saved_article["id"]}})
+
+
+        self.compareRecursively(expected_articles, articles,["id"])
 
 

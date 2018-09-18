@@ -1,6 +1,6 @@
 from random import random
 
-from database_services import Session, get_database_object, Article, save_database_object
+from database_write_services import Session, get_database_object, Article, save_database_object
 from functional import compose_list
 from immutable import Immutable, value, change
 from tests.base_test import BaseTest
@@ -63,6 +63,11 @@ class DatabaseServicesTests(BaseTest):
         saved_object = Session().query(Article).filter(Article.title==title).first()
         self.assertEquals(title, saved_object.title)
         self.assertEquals("Added content", saved_object.content)
+
+
+
+
+
 
 
 
