@@ -12,8 +12,8 @@ We save an article:
 POST /api/1/save/Article
 ```json
 {
-title:"New article",
-content:"The content"
+"title":"New article",
+"content":"The content"
 }
 ```
 
