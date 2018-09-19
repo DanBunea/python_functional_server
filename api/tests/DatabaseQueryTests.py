@@ -66,7 +66,7 @@ class DatabaseQueryTests(BaseTest):
             change("queries", queries),
             change("type", Article),
             change("session", session),
-            run_queries
+            # run_queries
         ])
 
         final_state =  process(initial_state)
