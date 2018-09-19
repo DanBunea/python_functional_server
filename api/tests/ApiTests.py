@@ -30,8 +30,9 @@ class ApiTests(BaseTest):
     @mock.patch('api.collect_query_parameters')
     @mock.patch('api.generate_queries')
     @mock.patch('api.run_queries')
-    # @mock.patch('api.to_json')
-    def test_query_articles(self,  change, collect_query_parameters,generate_queries, run_queries):
+    @mock.patch('api.transform_results')
+    @mock.patch('api.to_json')
+    def test_query_articles(self,  change, collect_query_parameters,generate_queries, run_queries, transform_results,to_json):
     # def test_save_an_article(self, change):
         #when
         query({}, None)
@@ -43,5 +44,8 @@ class ApiTests(BaseTest):
 
         generate_queries.assert_called()
         run_queries.assert_called()
+
+        transform_results.assert_called()
+        to_json.assert_called()
 
 

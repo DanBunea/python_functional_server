@@ -6,7 +6,7 @@ from database_write_services import Article, Comment
 from functional import compose_list
 from immutable import Immutable, change, value
 from tests.base_test import BaseTest
-from transform_services import transform_from_json, transform_to_json
+from transform_services import transform_from_json, transform_to_json, transform_results
 from api import to_json
 
 
@@ -92,8 +92,6 @@ class TransformServicesTests(BaseTest):
         self.assertTrue(json.has_key("id"))
         self.assertEquals("title",json["title"])
         self.assertEquals("content",json["content"])
-        self.assertEquals("First comment",json["comments"][0]["comment"])
-        self.assertEquals("Second comment",json["comments"][1]["comment"])
 
 
 
@@ -112,6 +110,36 @@ class TransformServicesTests(BaseTest):
         #assert the object contains the values
         self.compareRecursively({"data":json}, json_final,[])
 
+
+    def test_transform_results(self):
+        results = [
+            (1,"my title", "my content", 10, "my first comment"),
+            (1,"my title", "my content", 11, "my second comment")
+        ]
+
+        initial_state = Immutable(data=None, errors=[])
+        process = compose_list([
+            change("json", {"find":["id","title","content",{"comments":["id","comment"]}]}),
+            change("data", results),
+            transform_results
+        ])
+        final_state = process(initial_state)
+
+        expected_json = {1:{
+            "id":1,
+            "title":"my title",
+            "content": "my content",
+            "comments": {
+                10:{
+                    "id": 10,
+                    "comment":"my first comment"},
+                11:{
+                    "id": 11,
+                    "comment":"my second comment"}
+            }
+        }}
+
+        self.compareRecursively(expected_json, final_state.data,[])
 
 
 

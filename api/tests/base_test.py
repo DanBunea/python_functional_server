@@ -43,7 +43,7 @@ class BaseTest(unittest.TestCase):
                 # print "Now ",prop,a,b
                 ela = a[prop]
                 if isinstance(b, dict):
-                    self.assertTrue(b.has_key(prop), "key "+prop+" doesn't exist in "+str(b)+" where "+str(a)+" has.")
+                    self.assertTrue(b.has_key(prop), "key "+str(prop)+" doesn't exist in "+str(b)+" where "+str(a)+" has.")
                 if isinstance(b, list):
                     self.assertTrue(len(b)>prop)
                 elb = b[prop]

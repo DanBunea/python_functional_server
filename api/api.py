@@ -6,7 +6,7 @@ from commons import debug
 from database_read_services import collect_query_parameters, generate_queries, run_queries
 from database_write_services import get_database_object, Session, save_database_object, Article
 from lib.flask import jsonify
-from transform_services import transform_from_json, transform_to_json
+from transform_services import transform_from_json, transform_to_json, transform_results
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "lib"))
 
@@ -100,7 +100,9 @@ def query(json, session):
         change("type", Article),
         collect_query_parameters,
         generate_queries,
-        run_queries
+        run_queries,
+        transform_results,
+        to_json
       ])
 
 

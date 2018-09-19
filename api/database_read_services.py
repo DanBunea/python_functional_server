@@ -40,8 +40,7 @@ def collect_query_parameters(state):
         val = state.json["where"][where_key]
         query_parameters["conditions"].append(type_dict[where_key]==val)
 
-
-
+    query_parameters["first_property"]=query_parameters["properties"][0]
     return change("query_parameters", query_parameters)(state)
 
 
@@ -68,3 +67,23 @@ def generate_queries(state):
 
 def run_queries(state):
     raise NotImplementedError
+
+
+def run_queries(state):
+    debug("run_queries")
+    queries = state.queries
+    query_ids = queries["query_ids"]
+    query = queries["query"]
+    first_property=queries["first_property"]
+    debug("    query_ids", str(query_ids))
+
+    ids = query_ids.all()
+    if len(ids)>0:
+        query = query.filter(first_property.in_(map(lambda id:id[0],ids)))
+        debug("    query", str(query))
+        results = query.all()
+    else:
+        results=[]
+
+
+    return change("data",results)(state)
