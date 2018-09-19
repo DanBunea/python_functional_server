@@ -17,18 +17,19 @@ POST /api/1/save/Article
 }
 ```
 
-and we receive the article + id:
-
+and we receive the article + id
+```json
 {
 id: 13, - can be any value
 title:"New article",
 content:"The content"
 }
-
+```
 We then add 2 new comments:
 
 POST /api/1/save/Article
 
+```json
 {
 id: 13, - can be any value
 comments:[
@@ -36,28 +37,28 @@ comments:[
     {"comment":"I loved it as well!"},
 ]
 }
-
+```
 response:
-
+```json
 {
 id: 13, - can be any value
 title:"New article",
 content:"The content"
 }
-
+```
 and now reading the articles and the comments:
 
 
 POST api/1/query/Article
-
+```json
 {
     find: [id,title,content,{comments:[id,comment]}],
     where:{id:13}
 }
-
+```
 should return
 
-
+```json
 {"13":{
 
     id: 13, - can be any value
@@ -67,5 +68,4 @@ should return
     }
    }
    }
-
-
+```
