@@ -65,9 +65,6 @@ def generate_queries(state):
     return change("queries", dict(query_ids=query_ids, query=query, first_property=first_property))(state)
 
 
-def run_queries(state):
-    raise NotImplementedError
-
 
 def run_queries(state):
     debug("run_queries")
